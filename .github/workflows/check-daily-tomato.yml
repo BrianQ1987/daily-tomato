@@ -16,7 +16,7 @@ jobs:
           final_url=$(curl -Ls -o /dev/null -w %{url_effective} https://www.rottentomatoes.com/daily/)
           echo "Final URL after redirects: $final_url"
 
-          if [[ "$final_url" == "https://editorial.rottentomatoes.com/otg-article/daily-tomato-will-return/" ]]; then
+          if [[ "$final_url" == "https://editorial.rottentomatoes.com/otg-article/daily-tomato-will-return/s" ]]; then
             echo "ALERT=false" >> $GITHUB_OUTPUT
           else
             echo "ALERT=true" >> $GITHUB_OUTPUT
@@ -32,9 +32,10 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "🧃 Daily Tomato is BACK!"
+          subject: "🍅 Daily Tomato is BACK!"
           to: ${{ secrets.REPO_OWNER_EMAIL }}
           from: "GitHub Action <${{ secrets.EMAIL_USERNAME }}>"
           body: |
-            The Daily Tomato page has changed. 
+            The Daily Tomato page has changed.
+            
             Check it here: https://www.rottentomatoes.com/daily/
