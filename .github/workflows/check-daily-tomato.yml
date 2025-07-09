@@ -16,7 +16,7 @@ jobs:
           final_url=$(curl -Ls -o /dev/null -w %{url_effective} https://www.rottentomatoes.com/daily/)
           echo "Final URL after redirects: $final_url"
 
-          if [[ "$final_url" == "https://editorial.rottentomatoes.com/otg-article/daily-tomato-will-return/s" ]]; then
+          if [[ "$final_url" == "https://editorial.rottentomatoes.com/otg-article/daily-tomato-will-return/" ]]; then
             echo "ALERT=false" >> $GITHUB_OUTPUT
           else
             echo "ALERT=true" >> $GITHUB_OUTPUT
