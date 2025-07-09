@@ -13,15 +13,16 @@ jobs:
       - name: Check redirect
         id: check
         run: |
-          redirect_url=$(curl -s -o /dev/null -w "%{redirect_url}" https://www.rottentomatoes.com/daily/)
-          echo "Redirect URL: $redirect_url"
-          
-          if [[ "$redirect_url" != "https://editorial.rottentomatoes.com/otg-article/daily-tomato-will-return/" ]]; then
-            echo "ALERT=true" >> $GITHUB_OUTPUT
-            echo "Redirected to unexpected URL: $redirect_url" > message.txt
-          else
+          final_url=$(curl -Ls -o /dev/null -w %{url_effective} https://www.rottentomatoes.com/daily/)
+          echo "Final URL after redirects: $final_url"
+
+          if [[ "$final_url" == "https://editorial.rottentomatoes.com/otg-article/daily-tomato-will-return/" ]]; then
             echo "ALERT=false" >> $GITHUB_OUTPUT
+          else
+            echo "ALERT=true" >> $GITHUB_OUTPUT
+            echo "Redirected to unexpected URL: $final_url" > message.txt
           fi
+
 
       - name: Send Email if Alert Needed
         if: steps.check.outputs.ALERT == 'true'
